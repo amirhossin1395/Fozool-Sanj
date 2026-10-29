@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فضول سنج 🕵️ | تست شوخ‌طبعانه فضولی</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- پس‌زمینه ذرات -->
+    <div class="bg-particles" id="particles"></div>
+
+    <div class="container">
+
+        <!-- هدر -->
+        <header>
+            <div class="logo">🕵️</div>
+            <h1>فضول سنج</h1>
+            <p class="subtitle">بذار ببینم چقدر فضولی! 😂</p>
+        </header>
+
+        <!-- فرم نام -->
+        <div class="name-box" id="nameBox">
+            <label for="nameInput">اسمت چیه؟ 😎</label>
+            <input type="text" id="nameInput" placeholder="مثلاً: امیرحسین" maxlength="20" autocomplete="off">
+            <button id="nameBtn" class="btn btn-primary">شروع کن 🚀</button>
+        </div>
+
+        <!-- بخش اسکن -->
+        <div class="scan-section" id="scanSection" style="display:none;">
+            <div class="greeting" id="greeting">سلام! 👋</div>
+
+            <div class="scanner-box">
+                <video id="video" autoplay playsinline muted></video>
+                <canvas id="canvas" style="display:none;"></canvas>
+                <div class="corner tl"></div>
+                <div class="corner tr"></div>
+                <div class="corner bl"></div>
+                <div class="corner br"></div>
+                <div id="scan-line" class="scan-line"></div>
+                <div class="scan-status" id="scanStatus">آماده اسکن... 📷</div>
+            </div>
+
+            <div class="btn-group">
+                <button id="start-btn" class="btn btn-primary">📷 شروع اسکن</button>
+                <button id="upload-btn" class="btn btn-secondary">🖼️ آپلود عکس</button>
+                <input type="file" id="file-input" accept="image/*" style="display:none;">
+            </div>
+        </div>
+
+        <!-- نتیجه -->
+        <div id="result" class="result-card" style="display:none;">
+            <div class="result-emoji" id="resultEmoji">🕵️</div>
+            <h2 id="percent">--%</h2>
+            <div class="rank-badge" id="rankBadge">رده‌بندی</div>
+            <p id="message">...</p>
+            <p class="fun-fact" id="funFact"></p>
+
+            <div class="share-box">
+                <p class="share-title">نتیجه‌ت رو با دوستات به اشتراک بذار! 🎉</p>
+                <div class="share-buttons">
+                    <button id="share-native" class="btn btn-share">📤 اشتراک‌گذاری</button>
+                    <button id="share-whatsapp" class="btn btn-whatsapp">💬 واتساپ</button>
+                    <button id="share-telegram" class="btn btn-telegram">✈️ تلگرام</button>
+                    <button id="share-copy" class="btn btn-copy">📋 کپی لینک</button>
+                </div>
+            </div>
+
+            <button id="retry-btn" class="btn btn-retry">🔄 دوباره امتحان کن</button>
+        </div>
+
+        <footer>
+            <p>⚠️ این سایت فقط جنبه سرگرمی داره و هیچ تحلیل واقعی انجام نمی‌ده. 😄</p>
+            <p class="copyright">ساخته‌شده با ❤️ توسط امیرحسین حاجی مرادخانی | ۱۴۰۵</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
