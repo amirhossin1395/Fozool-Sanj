@@ -61,8 +61,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 'اصلاً کنجکاو نیستی؟ حتی یه ذره؟! باورت نمی‌شه! 🤯'
             ],
             facts: [
-                'نکته: آدم‌های مثل تو معمولاً رازهای دیگران رو خیلی خوب نگه می‌دارن! 🤫',
-                'تحقیقات می‌گه افراد کم‌فضول، دوستان قابل‌اعتمادتری هستن! 💚',
+                'آدم‌های مثل تو معمولاً رازهای دیگران رو خیلی خوب نگه می‌دارن! 🤫',
+                'افراد کم‌فضول، دوستان قابل‌اعتمادتری هستن! 💚',
                 'تو از اون دسته آدمایی هستی که وقتی گوشی رو می‌ذارن رو میز، نگاهش نمی‌کنن! 📱'
             ]
         },
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 'بقیه باید ازت یاد بگیرن چطور به حریم خصوصی احترام بذارن! 👏'
             ],
             facts: [
-                'می‌دونستی آدم‌های کم‌فضول معمولاً آرامش بیشتری دارن؟ 🧘',
+                'آدم‌های کم‌فضول معمولاً آرامش بیشتری دارن! 🧘',
                 'تو از اون دسته‌ای که وقتی پیام کسی رو می‌بینی، نمی‌خونی! 📵',
                 'کم‌فضولی یه نشانه‌ی بلوغه! تو داری! 🌱'
             ]
@@ -257,7 +257,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // ---------- نمایش نتیجه ----------
     function showResult() {
         currentPercent = Math.floor(Math.random() * 100) + 1;
-
         const rank = ranks.find(r => currentPercent <= r.max) || ranks[ranks.length - 1];
         currentRank = rank.name;
 
@@ -266,11 +265,8 @@ document.addEventListener('DOMContentLoaded', () => {
         rankBadge.style.background = `linear-gradient(135deg, ${rank.color}, ${rank.color}dd)`;
         resultEmoji.textContent = rank.emoji;
 
-        const msg = rank.messages[Math.floor(Math.random() * rank.messages.length)];
-        messageEl.textContent = msg;
-
-        const fact = rank.facts[Math.floor(Math.random() * rank.facts.length)];
-        funFactEl.textContent = fact;
+        messageEl.textContent = rank.messages[Math.floor(Math.random() * rank.messages.length)];
+        funFactEl.textContent = rank.facts[Math.floor(Math.random() * rank.facts.length)];
 
         result.style.display = 'block';
         result.style.animation = 'none';
@@ -281,16 +277,21 @@ document.addEventListener('DOMContentLoaded', () => {
         result.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
-    // ---------- اشتراک‌گذاری ----------
-    function getShareText() {
-        return `🕵️ فضول سنج\n\n${userName} جان، نتیجه‌ت ${currentPercent}% فضولیه!\nرده‌بندی: ${currentRank}\n\nتو هم امتحان کن! 😂`;
-    }
-
+    // ---------- ساخت لینک نتیجه ----------
     function getShareUrl() {
-        return window.location.href;
+        const params = new URLSearchParams({
+            name: userName,
+            percent: currentPercent,
+            rank: currentRank
+        });
+        return `${window.location.origin}${window.location.pathname}?${params.toString()}`;
     }
 
-    // اشتراک‌گذاری بومی (گوشی)
+    function getShareText() {
+        return `🕵️ فضول سنج\n\n${userName} جان، نتیجه‌ت ${currentPercent}% فضولیه!\nرده‌بندی: ${currentRank}\n\nتو هم امتحان کن! 😂\n`;
+    }
+
+    // ---------- اشتراک‌گذاری بومی ----------
     document.getElementById('share-native').addEventListener('click', async () => {
         const text = getShareText();
         const url = getShareUrl();
@@ -304,20 +305,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // واتساپ
+    // ---------- واتساپ ----------
     document.getElementById('share-whatsapp').addEventListener('click', () => {
-        const text = encodeURIComponent(getShareText() + '\n' + getShareUrl());
+        const text = encodeURIComponent(getShareText() + getShareUrl());
         window.open(`https://wa.me/?text=${text}`, '_blank');
     });
 
-    // تلگرام
+    // ---------- تلگرام ----------
     document.getElementById('share-telegram').addEventListener('click', () => {
         const text = encodeURIComponent(getShareText());
         const url = encodeURIComponent(getShareUrl());
         window.open(`https://t.me/share/url?url=${url}&text=${text}`, '_blank');
     });
 
-    // کپی لینک
+    // ---------- کپی لینک ----------
     document.getElementById('share-copy').addEventListener('click', () => {
         navigator.clipboard.writeText(getShareUrl()).then(() => {
             const btn = document.getElementById('share-copy');
@@ -333,4 +334,36 @@ document.addEventListener('DOMContentLoaded', () => {
         scanStatus.textContent = 'آماده اسکن... 📷';
         video.style.display = 'block';
     });
+
+    // ---------- نمایش نتیجه از لینک اشتراک‌گذاری ----------
+    const urlParams = new URLSearchParams(window.location.search);
+    const sharedName = urlParams.get('name');
+    const sharedPercent = urlParams.get('percent');
+    const sharedRank = urlParams.get('rank');
+
+    if (sharedName && sharedPercent && sharedRank) {
+        nameBox.style.display = 'none';
+        scanSection.style.display = 'none';
+
+        userName = sharedName;
+        currentPercent = parseInt(sharedPercent, 10);
+        currentRank = sharedRank;
+
+        percentEl.textContent = currentPercent + '%';
+        rankBadge.textContent = currentRank;
+
+        const rank = ranks.find(r => currentPercent <= r.max) || ranks[ranks.length - 1];
+        rankBadge.style.background = `linear-gradient(135deg, ${rank.color}, ${rank.color}dd)`;
+        resultEmoji.textContent = rank.emoji;
+
+        messageEl.textContent = rank.messages[Math.floor(Math.random() * rank.messages.length)];
+        funFactEl.textContent = rank.facts[Math.floor(Math.random() * rank.facts.length)];
+
+        result.style.display = 'block';
+
+        if (greeting) {
+            greeting.textContent = `سلام ${userName}! 👋 این نتیجه‌ی فضولی توئه!`;
+        }
+    }
+
 });
